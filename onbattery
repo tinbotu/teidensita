@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# This shell script if placed in /etc/apcupsd
+# will be called by /etc/apcupsd/apccontrol when the UPS
+# goes on batteries.
+# We send an email message to root to notify him.
+#
+SYSADMIN=user@yahoo.com
+APCUPSD_MAIL="/bin/mail"
+
+HOSTNAME=`hostname`
+MSG="$HOSTNAME Power Failure !!!"
+#
+(
+   echo "Subject: $MSG"
+   echo " "
+   echo "$MSG"
+   echo " "
+   /sbin/apcaccess status | grep TIMELEFT
+) | $APCUPSD_MAIL -s "$MSG" $SYSADMIN
+
+
+nowtime=`date +'%H:%M:%S'`
+apc=`apcaccess status |grep -E  '(^LINEV)'|awk -F' :' '{print $2}'`
+message="Power Failure! $nowtime (minatoku, tokyo) Line:$apc #teiden"
+/home/kuma/bin/sorapost/post.rb /home/kuma/bin/sorapost/token "$message"
+
+exit 0

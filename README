@@ -1,0 +1,6 @@
+停電したとき, 復帰したときに通知する bot
+
+apcupsd の apccontrol から kick されています
+
+@tinbotu
+
