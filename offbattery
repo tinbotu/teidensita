@@ -19,11 +19,9 @@ MSG="$HOSTNAME Power has returned"
    /sbin/apcaccess status | grep TIMELEFT
 ) | $APCUPSD_MAIL -s "$MSG" $SYSADMIN
 
-
 nowtime=`date +'%H:%M:%S'`
 apc=`apcaccess status |grep -E  '(^LINEV)'|awk -F' :' '{print $2}'`
 message="Power has returned. $nowtime (minatoku, tokyo) Line:$apc #teiden"
-/home/kuma/bin/sorapost/post.rb /home/kuma/bin/sorapost/token "$message"
-
+/home/kuma/bin/teidensita/post.rb /home/kuma/bin/teidensita/token "$message"
 
 exit 0
